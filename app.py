@@ -177,95 +177,66 @@ elif opcion == "Ejercicio 2":
     else:
         st.info("No existen registros guardados.")
 
-
 # ==========================================
-# SECCIÓN 4: EJERCICIO 3 - LIBRERÍA DE FUNCIONES (ESTADÍSTICAS)
+# SECCIÓN 4: EJERCICIO 3 - LIBRERÍA DE FUNCIONES
 # ==========================================
 elif opcion == "Ejercicio 3":
-    st.title("Ejercicio 3 - Uso de Funciones de `libreria_funciones_proyecto1`")
-    st.markdown("Ejecución directa de las funciones estadísticas de la librería sobre un conjunto de datos numéricos.")
+    st.title("Ejercicio 3 - Uso de `libreria_funciones_proyecto1`")
+    st.markdown("Cálculo de **Margen Neto** e indicadores financieros mediante la función `calcular_margen_neto`.")
 
-    # Entrada de datos por parte del usuario
-    input_datos = st.text_input(
-        "Ingrese una lista de números separados por comas (ej. 10, 20, 20, 30, 40, 50):",
-        value="15.5, 20.0, 20.0, 35.2, 40.0, 50.0"
-    )
-
-    func_sel = st.selectbox(
-        "Seleccione la función a ejecutar:",
-        [
-            "Resumen Estadístico Completo (resumen_estadistico)",
-            "Promedio (promedio)",
-            "Mediana (mediana)",
-            "Moda (moda)",
-            "Rango (rango)"
-        ]
-    )
-
-    if st.button("Ejecutar Función"):
-        try:
-            # Convertir string separado por comas a lista de floats
-            lista_num = [float(x.strip()) for x in input_datos.split(",") if x.strip() != ""]
+    with st.form("form_margen_neto"):
+        st.subheader("Ingreso de Parámetros Financieros")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            ingresos = st.number_input("Ingresos Totales ($)", min_value=0.01, value=10000.0, step=500.0, format="%.2f")
+            costos = st.number_input("Costos ($)", min_value=0.0, value=4000.0, step=200.0, format="%.2f")
             
-            if not lista_num:
-                st.error("Por favor, ingrese al menos un número válido.")
-            else:
-                st.subheader("Resultado de la Función")
-                
-                # Invocación de las funciones reales de libreria_funciones_proyecto1.py
-                if func_sel == "Resumen Estadístico Completo (resumen_estadistico)":
-                    res = lf.resumen_estadistico(lista_num)
-                    st.json(res)
-                    st.session_state.historico_funciones.append({
-                        "Función": "resumen_estadistico",
-                        "Datos": str(lista_num),
-                        "Resultado": str(res)
-                    })
+        with col2:
+            gastos_op = st.number_input("Gastos Operativos ($)", min_value=0.0, value=2000.0, step=100.0, format="%.2f")
+            impuestos = st.number_input("Impuestos ($)", min_value=0.0, value=1000.0, step=50.0, format="%.2f")
 
-                elif func_sel == "Promedio (promedio)":
-                    res = lf.promedio(lista_num)
-                    st.metric("Promedio / Media", f"{res:.4f}")
-                    st.session_state.historico_funciones.append({
-                        "Función": "promedio",
-                        "Datos": str(lista_num),
-                        "Resultado": f"{res:.4f}"
-                    })
+        btn_calcular = st.form_submit_button("Calcular Margen Neto")
 
-                elif func_sel == "Mediana (mediana)":
-                    res = lf.mediana(lista_num)
-                    st.metric("Mediana", f"{res:.4f}")
-                    st.session_state.historico_funciones.append({
-                        "Función": "mediana",
-                        "Datos": str(lista_num),
-                        "Resultado": f"{res:.4f}"
-                    })
+    if btn_calcular:
+        try:
+            # Invocación directa a la función real de la librería
+            resultado = lf.calcular_margen_neto(
+                ingresos=ingresos,
+                costos=costos,
+                gastos_operativos=gastos_op,
+                impuestos=impuestos
+            )
 
-                elif func_sel == "Moda (moda)":
-                    res = lf.moda(lista_num)
-                    st.write(f"**Moda(s):** {res}")
-                    st.session_state.historico_funciones.append({
-                        "Función": "moda",
-                        "Datos": str(lista_num),
-                        "Resultado": str(res)
-                    })
+            st.markdown("---")
+            st.subheader("Resultados Obtenidos")
 
-                elif func_sel == "Rango (rango)":
-                    res = lf.rango(lista_num)
-                    st.metric("Rango", f"{res:.4f}")
-                    st.session_state.historico_funciones.append({
-                        "Función": "rango",
-                        "Datos": str(lista_num),
-                        "Resultado": f"{res:.4f}"
-                    })
+            # Muestra de métricas principales
+            m1, m2, m3 = st.columns(3)
+            m1.metric("Utilidad Bruta", f"${resultado['utilidad_bruta']:,.2f}")
+            m2.metric("Utilidad Neta", f"${resultado['utilidad_neta']:,.2f}")
+            m3.metric("Margen Neto (%)", f"{resultado['margen_neto_pct']:.2f}%")
 
-        except ValueError:
-            st.error("Asegúrese de ingresar únicamente valores numéricos separados por comas.")
+            # Guardar en sesión para llevar registro histórico
+            st.session_state.historico_funciones.append({
+                "Ingresos": f"${ingresos:,.2f}",
+                "Utilidad Bruta": f"${resultado['utilidad_bruta']:,.2f}",
+                "Utilidad Neta": f"${resultado['utilidad_neta']:,.2f}",
+                "Margen Neto (%)": f"{resultado['margen_neto_pct']:.2f}%"
+            })
 
+            st.success("Cálculo realizado con éxito.")
+
+        except ValueError as err:
+            st.error(f"Error en los parámetros ingresados: {err}")
+        except Exception as e:
+            st.error(f"Ocurrió un error inesperado al ejecutar la función: {e}")
+
+    # Mostrar histórico de evaluaciones realizadas en la sesión
     if st.session_state.historico_funciones:
         st.markdown("---")
-        st.subheader("Histórico de Ejecuciones")
+        st.subheader("Histórico de Evaluaciones Financieras")
         st.dataframe(pd.DataFrame(st.session_state.historico_funciones), use_container_width=True)
-
 
 # ==========================================
 # SECCIÓN 5: EJERCICIO 4 - CRUD CON CLASES (`Persona`, `Estudiante`, `Docente`)
