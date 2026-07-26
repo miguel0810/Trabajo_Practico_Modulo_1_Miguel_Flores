@@ -18,10 +18,10 @@ st.title(f"Titulo: {titulo}")
 st.image(url_imagen)
 st.subheader(f"Alumno: {alumno}")
 st.subheader(f"Modulo: {modulo}")
-st.write(f"Información general del estudiante: {informacion}"),
+st.write(f"Información general del estudiante: {informacion}")
 st.write(f"Año: {anio}")
-st.markdown(f"Año: {anio}"),
-st.markdown(descripcion),
+st.markdown(f"Año: {anio}")
+st.markdown(descripcion)
 st.markdown(f"**Las herramientas utilizadas para este proyecto fueron:** {herramientas_str}")
 st.markdown(f"Las herramientas utilizadas para este proyecto fueron: : {herramientas}")
 
