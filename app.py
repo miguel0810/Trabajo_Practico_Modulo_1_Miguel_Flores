@@ -2,7 +2,7 @@ import streamlit as st
 
 import numpy as np
 
-import libreria_funciones as lf
+import libreria_funciones_proyecto1 as lf
 
 st.session_state
 
