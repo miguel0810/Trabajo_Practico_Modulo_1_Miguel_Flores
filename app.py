@@ -16,7 +16,7 @@ st.write("Prueba 1")
 
 st.markdown("Markdown")
 
-// st.image() opcional
+st.image("https://github.com/miguel0810/Trabajo_Practico_Modulo_1_Miguel_Flores/blob/506e02d1926c6ed86f4438f4cf821b6531b89f51/DMC.png")
 
 st.image("Python_logo.png")
 
