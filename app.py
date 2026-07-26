@@ -14,8 +14,8 @@ st.session_state
 st.sidebar.title("Contenedor")
 st.title(f"Titulo: {titulo}")
 st.image("https://github.com/miguel0810/Trabajo_Practico_Modulo_1_Miguel_Flores/blob/506e02d1926c6ed86f4438f4cf821b6531b89f51/DMC.png")
-st.subheader(f"Alumno: {alumno}"),
-st.subheader(f"Modulo: "{modulo})
+st.subheader(f"Alumno: {alumno}")
+st.subheader(f"Modulo: {modulo}")
 st.write(f"Información general del estudiante: {informacion}"),
 st.write(f"Año: {anio}")
 st.markdown(f"Año: {anio}"),
