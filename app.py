@@ -1,22 +1,28 @@
 import streamlit as st
-
 import numpy as np
-
 import libreria_funciones_proyecto1 as lf
 
+titulo = "Proyecto Aplicado en Streamlit – Fundamentos de Programación"
+alumno = "Miguel Flores Ccama"
+modulo = "Módulo 1 – Python Fundamentals"
+anio = 2026
+informacion = "Soy Ing. de Sistemas que busca profundizar sus conocimientos en Python y en la ciencia de datos."
+descripcion = "El proyecto 1 pythn fundamentals busca fortalecer los conocimientos basicos en Python."
+herramientas = ["Python", "Streamli", "Numpy"]
+
 st.session_state
-
-st.title("Proyecto Aplicado en Streamlit – Fundamentos de Programación")
-
 st.sidebar.title("Contenedor")
-autor = "Miguel Flores Ccama"
-st.subheader(f"Autor: {autor}")
-
-st.write("Prueba 1")
-
-st.markdown("Markdown")
-
+st.title(f"Titulo: {titulo}")
 st.image("https://github.com/miguel0810/Trabajo_Practico_Modulo_1_Miguel_Flores/blob/506e02d1926c6ed86f4438f4cf821b6531b89f51/DMC.png")
+st.subheader(f"Alumno: {alumno}")
+st.subheader(f"Modulo: "{modulo})
+st.write(f"Información general del estudiante: {informacion}")
+st.write(f"Año: {anio}")
+st.markdown(f"Año: {anio}")
+st.markdown(f"descripción del proyecto: {descripcion}")
+st.markdown(f"Las herramientas utilizadas para este proyecto fueron: : {herramientas}")
+
+
 
 st.image("Python_logo.png")
 
