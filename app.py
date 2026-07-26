@@ -6,11 +6,11 @@ import libreria_funciones_proyecto1 as lf
 
 st.session_state
 
-st.title("Proyecto módulo 1 Fundamentals")
+st.title("Proyecto Aplicado en Streamlit – Fundamentos de Programación")
 
 st.sidebar.title("Contenedor")
-
-st.subheader("Miguel Flores Ccama")
+autor = "Miguel Flores Ccama"
+st.subheader(f'"Autor: "{autor})
 
 st.write("Prueba 1")
 
