@@ -181,7 +181,7 @@ elif opcion == "Ejercicio 2":
 # SECCIÓN 4: EJERCICIO 3 - LIBRERÍA DE FUNCIONES
 # ==========================================
 elif opcion == "Ejercicio 3":
-    st.title("Ejercicio 3 - Uso de `libreria_funciones_proyecto1`")
+    st.title("Ejercicio 3 - Uso de funciones desde una librería externa")
     st.markdown("Cálculo de **Margen Neto** e indicadores financieros mediante la función `calcular_margen_neto`.")
 
     with st.form("form_margen_neto"):
