@@ -10,7 +10,13 @@ st.title("Proyecto módulo 1 Fundamentals")
 
 st.sidebar.title("Contenedor")
 
- 
+st.subheader("Miguel Flores Ccama")
+
+st.write("Prueba 1")
+
+st.markdown("Markdown")
+
+// st.image() opcional
 
 st.image("Python_logo.png")
 
