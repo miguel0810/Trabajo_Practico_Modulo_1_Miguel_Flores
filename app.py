@@ -22,7 +22,7 @@ st.write(f"Información general del estudiante: {informacion}")
 st.write(f"Año: {anio}")
 st.markdown(f"Año: {anio}")
 st.markdown(f"Descripción del proyecto: {descripcion}")
-st.markdown(f"Las herramientas utilizadas para este proyecto fueron: : {herramientas}")
+st.markdown(f"Las herramientas utilizadas para este proyecto fueron: {herramientas}")
 
 
 
