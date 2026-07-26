@@ -4,7 +4,7 @@ import pandas as pd
 
 # Importación de las librerías del proyecto
 import libreria_funciones_proyecto1 as lf
-import libreria_clases_proyecto1 as lc
+import librería_clases_proyecto1 as lc
 
 # Configuración de la página
 st.set_page_config(
