@@ -217,9 +217,12 @@ elif opcion == "Ejercicio 3":
             m2.metric("Utilidad Neta", f"${resultado['utilidad_neta']:,.2f}")
             m3.metric("Margen Neto (%)", f"{resultado['margen_neto_pct']:.2f}%")
 
-            # Guardar en sesión para llevar registro histórico
+            # Guardar en sesión para llevar registro histórico completo
             st.session_state.historico_funciones.append({
                 "Ingresos": f"${ingresos:,.2f}",
+                "Costos": f"${costos:,.2f}",
+                "Gastos Operativos": f"${gastos_op:,.2f}",
+                "Impuestos": f"${impuestos:,.2f}",
                 "Utilidad Bruta": f"${resultado['utilidad_bruta']:,.2f}",
                 "Utilidad Neta": f"${resultado['utilidad_neta']:,.2f}",
                 "Margen Neto (%)": f"{resultado['margen_neto_pct']:.2f}%"
