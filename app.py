@@ -21,12 +21,10 @@ st.subheader(f"Modulo: {modulo}")
 st.write(f"Información general del estudiante: {informacion}")
 st.write(f"Año: {anio}")
 st.markdown(f"Año: {anio}")
-st.markdown(descripcion)
+st.markdown(f"Descripción del proyecto: {descripcion}")
 st.markdown(f"Las herramientas utilizadas para este proyecto fueron: : {herramientas}")
 
 
-
-st.image("Python_logo.png")
 
 st.sidebar.image("DMC.png")
 
