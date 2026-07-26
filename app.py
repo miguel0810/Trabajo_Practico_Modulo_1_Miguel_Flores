@@ -10,7 +10,7 @@ st.title("Proyecto Aplicado en Streamlit – Fundamentos de Programación")
 
 st.sidebar.title("Contenedor")
 autor = "Miguel Flores Ccama"
-st.subheader(f'"Autor: "{autor})
+st.subheader(f"Autor: "{autor})
 
 st.write("Prueba 1")
 
