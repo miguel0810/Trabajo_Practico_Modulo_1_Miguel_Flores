@@ -64,7 +64,7 @@ if opcion == "Home":
         st.write("**Alumno:** Miguel Flores Ccama")
         st.write("**Módulo:** Módulo 1 – Python Fundamentals")
         st.write("**Año:** 2026")
-        st.write("**Información general:** Ing. de Sistemas orientado a profundizar conocimientos en Python y Ciencia de Datos.")
+        st.write("**Información general:** Soy Ing. de Sistemas que busco profundizar mis conocimientos en Python y Ciencia de Datos.")
         
     with col2:
         st.image(
@@ -87,9 +87,9 @@ if opcion == "Home":
     st.markdown("- **Python** (Estructuras de datos, Funciones y POO)\n- **Streamlit** (Interfaz gráfica e interactiva)\n- **NumPy & Pandas** (Gestión de vectores y tablas de datos)")
 
 
-# ==========================================
-# SECCIÓN 2: EJERCICIO 1 - FLUJO DE CAJA
-# ==========================================
+# ==================================================
+# SECCIÓN 2: EJERCICIO 1 - FLUJO DE CAJA CON LISTAS
+# ==================================================
 elif opcion == "Ejercicio 1":
     st.title("Ejercicio 1 - Flujo de Caja con Listas")
     st.markdown("Módulo interactivo para registrar movimientos financieros en una lista y determinar el saldo final.")
@@ -139,9 +139,9 @@ elif opcion == "Ejercicio 1":
         st.info("No hay movimientos registrados.")
 
 
-# ==========================================
-# SECCIÓN 3: EJERCICIO 2 - REGISTRO CON NUMPY
-# ==========================================
+# ================================================================
+# SECCIÓN 3: EJERCICIO 2 - REGISTRO CON NUMPY, ARRAYS Y DATAFRAME
+# ================================================================
 elif opcion == "Ejercicio 2":
     st.title("Ejercicio 2 - Registro con NumPy, Arrays y DataFrames")
     st.markdown("Registro de inventario mediante arrays unidimensionales de NumPy expuestos en un DataFrame dinámico.")
@@ -245,7 +245,7 @@ elif opcion == "Ejercicio 3":
 # SECCIÓN 5: EJERCICIO 4 - CRUD CON CLASES (InventarioProducto)
 # ==========================================
 elif opcion == "Ejercicio 4":
-    st.title("Ejercicio 4 - Gestor CRUD con la Clase `InventarioProducto`")
+    st.title("Ejercicio 4 - Uso de clases desde una librería externa con CRUD - Clase `InventarioProducto`")
     st.markdown("Módulo para gestionar productos en inventario mediante la clase **`InventarioProducto`**.")
 
     # Inicialización específica en session_state para la lista de productos de tipo InventarioProducto
