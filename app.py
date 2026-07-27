@@ -242,131 +242,150 @@ elif opcion == "Ejercicio 3":
         st.dataframe(pd.DataFrame(st.session_state.historico_funciones), use_container_width=True)
 
 # ==========================================
-# SECCIÓN 5: EJERCICIO 4 - CRUD CON CLASES (`Persona`, `Estudiante`, `Docente`)
+# SECCIÓN 5: EJERCICIO 4 - CRUD CON CLASES (InventarioProducto)
 # ==========================================
 elif opcion == "Ejercicio 4":
-    st.title("Ejercicio 4 - Gestor CRUD con `libreria_clases_proyecto1`")
-    st.markdown("Módulo para administrar objetos de las clases **`Persona`**, **`Estudiante`** y **`Docente`**.")
+    st.title("Ejercicio 4 - Gestor CRUD con la Clase `InventarioProducto`")
+    st.markdown("Módulo para gestionar productos en inventario mediante la clase **`InventarioProducto`**.")
 
-    tab_create, tab_read, tab_update, tab_delete = st.tabs(["Crear Registro", "Ver Registros", "Actualizar", "Eliminar"])
+    # Inicialización específica en session_state para la lista de productos de tipo InventarioProducto
+    if "inventario_productos" not in st.session_state:
+        st.session_state.inventario_productos = []
 
+    tab_create, tab_read, tab_update, tab_delete = st.tabs(["Crear Producto", "Ver Inventario", "Actualizar", "Eliminar"])
+
+    # ------------------------------------------
     # 1. CREAR (Create)
+    # ------------------------------------------
     with tab_create:
-        st.subheader("Crear un nuevo Objeto (Persona / Estudiante / Docente)")
-        tipo_clase = st.selectbox("Tipo de Registro:", ["Persona", "Estudiante", "Docente"])
-
-        with st.form("form_crear_persona", clear_on_submit=True):
+        st.subheader("Registrar Nuevo Producto en Inventario")
+        with st.form("form_crear_producto", clear_on_submit=True):
+            nombre_p = st.text_input("Nombre del Producto")
             col1, col2 = st.columns(2)
+            
             with col1:
-                nombre = st.text_input("Nombre completo")
-                edad = st.number_input("Edad", min_value=1, max_value=120, value=25)
+                costo_u = st.number_input("Costo Unitario ($)", min_value=0.01, value=50.0, step=5.0, format="%.2f")
+                precio_u = st.number_input("Precio Unitario ($)", min_value=0.01, value=80.0, step=5.0, format="%.2f")
+            
             with col2:
-                dni = st.text_input("DNI / Documento")
+                stock_act = st.number_input("Stock Actual", min_value=0, value=15, step=1)
+                stock_min = st.number_input("Stock Mínimo (Alerta de Reposición)", min_value=0, value=5, step=1)
 
-            # Campos específicos por tipo de clase
-            carrera = ""
-            curso = ""
-            if tipo_clase == "Estudiante":
-                carrera = st.text_input("Carrera")
-            elif tipo_clase == "Docente":
-                curso = st.text_input("Curso a Cargo")
+            btn_crear_prod = st.form_submit_button("Crear Objeto Producto")
 
-            btn_crear = st.form_submit_button("Guardar en Sistema")
-
-        if btn_crear:
-            if nombre.strip() and dni.strip():
+        if btn_crear_prod:
+            if nombre_p.strip():
                 try:
-                    # Instanciación real de las clases de libreria_clases_proyecto1.py
-                    if tipo_clase == "Persona":
-                        obj = lc.Persona(nombre=nombre, edad=edad, dni=dni)
-                    elif tipo_clase == "Estudiante":
-                        obj = lc.Estudiante(nombre=nombre, edad=edad, dni=dni, carrera=carrera)
-                    elif tipo_clase == "Docente":
-                        obj = lc.Docente(nombre=nombre, edad=edad, dni=dni, curso=curso)
-                    
-                    st.session_state.personas.append(obj)
-                    st.success(f"Objeto tipo `{tipo_clase}` registrado exitosamente.")
+                    # Instanciación del objeto InventarioProducto
+                    # Si la clase está en libreria_clases_proyecto1 usa lc.InventarioProducto
+                    # Si está en libreria_funciones_proyecto1 usa lf.InventarioProducto
+                    nuevo_producto = lc.InventarioProducto(
+                        nombre=nombre_p,
+                        costo_unitario=costo_u,
+                        precio_unitario=precio_u,
+                        stock_actual=int(stock_act),
+                        stock_minimo=int(stock_min)
+                    )
+                    st.session_state.inventario_productos.append(nuevo_producto)
+                    st.success(f"Producto '{nombre_p}' registrado exitosamente como objeto `InventarioProducto`.")
+                except ValueError as err:
+                    st.error(f"Error de validación al crear el producto: {err}")
                 except Exception as e:
-                    st.error(f"Error al instanciar el objeto: {e}")
+                    st.error(f"Ocurrió un error inesperado: {e}")
             else:
-                st.warning("Por favor complete los campos obligatorios (Nombre y DNI).")
+                st.warning("Por favor, ingrese un nombre válido para el producto.")
 
+    # ------------------------------------------
     # 2. LEER (Read)
+    # ------------------------------------------
     with tab_read:
-        st.subheader("Registros en Sistema")
-        if st.session_state.personas:
-            datos_tabla = []
-            for idx, p in enumerate(st.session_state.personas):
-                # Evaluación de los métodos y atributos reales de los objetos
-                info = {
-                    "Índice": idx,
-                    "Tipo Clase": type(p).__name__,
-                    "Nombre": p.nombre,
-                    "Edad": p.edad,
-                    "DNI": p.dni,
-                    "Detalle / Presentación": p.presentarse() if hasattr(p, "presentarse") else str(p)
-                }
-                if isinstance(p, lc.Estudiante):
-                    info["Atributo Especial"] = f"Carrera: {p.carrera}"
-                elif isinstance(p, lc.Docente):
-                    info["Atributo Especial"] = f"Curso: {p.curso}"
+        st.subheader("Estado Actual del Inventario")
+        if st.session_state.inventario_productos:
+            # Obtención de resúmenes invocando el método .resumen() del objeto
+            lista_resumenes = [p.resumen() for p in st.session_state.inventario_productos]
+            df_inventario = pd.DataFrame(lista_resumenes)
+            
+            # Renombrar columnas para mejor lectura en la interfaz
+            df_inventario.columns = [
+                "Producto", "Stock Actual", "Valor Inventario ($)", 
+                "Margen Unitario ($)", "Margen (%)", "Requiere Reposición"
+            ]
+            
+            st.dataframe(df_inventario, use_container_width=True)
+
+            # Tarjetas / Alertas de reposición usando el método .necesita_reposicion()
+            st.subheader("Alertas de Stock")
+            for prod in st.session_state.inventario_productos:
+                res = prod.resumen()
+                if prod.necesita_reposicion():
+                    st.error(
+                        f"⚠️ **{prod.nombre}**: STOCK CRÍTICO (Actual: {prod.stock_actual} | Mínimo: {prod.stock_minimo}). "
+                        f"¡Requiere reposición inmediata!"
+                    )
                 else:
-                    info["Atributo Especial"] = "N/A"
-                
-                datos_tabla.append(info)
-
-            st.dataframe(pd.DataFrame(datos_tabla), use_container_width=True)
+                    st.success(
+                        f"✅ **{prod.nombre}**: Stock suficiente (Actual: {prod.stock_actual} | Mínimo: {prod.stock_minimo}). "
+                        f"Valor Total: ${prod.valor_inventario():,.2f} | Margen: {prod.margen_porcentaje():.2f}%"
+                    )
         else:
-            st.info("No hay personas, estudiantes o docentes registrados.")
+            st.info("No existen productos registrados en el inventario.")
 
+    # ------------------------------------------
     # 3. ACTUALIZAR (Update)
+    # ------------------------------------------
     with tab_update:
-        st.subheader("Actualizar Registro Existente")
-        if st.session_state.personas:
-            opciones_personas = [f"{idx} - {p.nombre} ({type(p).__name__})" for idx, p in enumerate(st.session_state.personas)]
-            seleccion = st.selectbox("Seleccione el registro a editar:", opciones_personas)
-            
-            idx_sel = int(seleccion.split(" - ")[0])
-            obj_sel = st.session_state.personas[idx_sel]
+        st.subheader("Actualizar Parámetros del Producto")
+        if st.session_state.inventario_productos:
+            nombres_productos = [p.nombre for p in st.session_state.inventario_productos]
+            prod_seleccionado_nombre = st.selectbox("Seleccione el producto a editar:", nombres_productos)
 
-            with st.form("form_actualizar_persona"):
-                nuevo_nombre = st.text_input("Nombre", value=obj_sel.nombre)
-                nueva_edad = st.number_input("Edad", min_value=1, max_value=120, value=obj_sel.edad)
-                nuevo_dni = st.text_input("DNI", value=obj_sel.dni)
+            # Buscar la instancia seleccionada
+            prod_obj = next((p for p in st.session_state.inventario_productos if p.nombre == prod_seleccionado_nombre), None)
 
-                if isinstance(obj_sel, lc.Estudiante):
-                    nueva_carrera = st.text_input("Carrera", value=obj_sel.carrera)
-                elif isinstance(obj_sel, lc.Docente):
-                    nuevo_curso = st.text_input("Curso", value=obj_sel.curso)
+            if prod_obj:
+                with st.form("form_actualizar_producto"):
+                    st.markdown(f"**Modificando:** {prod_obj.nombre}")
+                    c1, c2 = st.columns(2)
+                    
+                    with c1:
+                        nuevo_costo = st.number_input("Costo Unitario ($)", value=float(prod_obj.costo_unitario), min_value=0.01, step=1.0)
+                        nuevo_precio = st.number_input("Precio Unitario ($)", value=float(prod_obj.precio_unitario), min_value=0.01, step=1.0)
+                    
+                    with c2:
+                        nuevo_stock_act = st.number_input("Stock Actual", value=int(prod_obj.stock_actual), min_value=0, step=1)
+                        nuevo_stock_min = st.number_input("Stock Mínimo", value=int(prod_obj.stock_minimo), min_value=0, step=1)
 
-                btn_actualizar = st.form_submit_button("Guardar Cambios")
+                    btn_actualizar = st.form_submit_button("Guardar Cambios")
 
-            if btn_actualizar:
-                obj_sel.nombre = nuevo_nombre
-                obj_sel.edad = nueva_edad
-                obj_sel.dni = nuevo_dni
-                if isinstance(obj_sel, lc.Estudiante):
-                    obj_sel.carrera = nueva_carrera
-                elif isinstance(obj_sel, lc.Docente):
-                    obj_sel.curso = nuevo_curso
-                
-                st.success("Registro actualizado correctamente.")
-                st.rerun()
+                if btn_actualizar:
+                    try:
+                        # Actualización directa de los atributos del objeto
+                        prod_obj.costo_unitario = nuevo_costo
+                        prod_obj.precio_unitario = nuevo_precio
+                        prod_obj.stock_actual = nuevo_stock_act
+                        prod_obj.stock_minimo = nuevo_stock_min
+
+                        st.success(f"Producto '{prod_obj.nombre}' actualizado correctamente.")
+                        st.rerun()
+                    except Exception as err:
+                        st.error(f"Error al actualizar el producto: {err}")
         else:
-            st.info("No hay registros disponibles para editar.")
+            st.info("No hay productos disponibles para actualizar.")
 
+    # ------------------------------------------
     # 4. ELIMINAR (Delete)
+    # ------------------------------------------
     with tab_delete:
-        st.subheader("Eliminar Registro")
-        if st.session_state.personas:
-            opciones_personas_del = [f"{idx} - {p.nombre} ({type(p).__name__})" for idx, p in enumerate(st.session_state.personas)]
-            seleccion_del = st.selectbox("Seleccione el registro a eliminar:", opciones_personas_del)
-            
-            idx_del = int(seleccion_del.split(" - ")[0])
+        st.subheader("Eliminar Producto del Inventario")
+        if st.session_state.inventario_productos:
+            nombres_del = [p.nombre for p in st.session_state.inventario_productos]
+            p_del_nombre = st.selectbox("Seleccione el producto a eliminar:", nombres_del)
 
-            if st.button("Eliminar Registro", type="primary"):
-                persona_removida = st.session_state.personas.pop(idx_del)
-                st.success(f"El registro de **{persona_removida.nombre}** ha sido eliminado.")
+            if st.button("Eliminar Producto", type="primary"):
+                st.session_state.inventario_productos = [
+                    p for p in st.session_state.inventario_productos if p.nombre != p_del_nombre
+                ]
+                st.success(f"El producto '{p_del_nombre}' ha sido eliminado exitosamente del inventario.")
                 st.rerun()
         else:
-            st.info("No hay registros disponibles para eliminar.")
+            st.info("No hay productos registrados para eliminar.")
